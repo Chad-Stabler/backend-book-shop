@@ -4,18 +4,20 @@ drop table if exists authors;
 drop table if exists books;
 
 create table authors (
-    name varchar not null,
+    author_id bigint generated always as identity,
+    author_name varchar not null,
     dob date,
     pob varchar
 );
 
 create table books (
+    book_id bigint generated always as identity,
     title varchar not null,
     released int not null,
     author_name varchar not null
 );
 
-insert into authors (name, dob, pob) values
+insert into authors (author_name, dob, pob) values
 ('James Rollins', '1961-08-20', 'Chicago'),
 ('Lee Child', '1954-10-29', 'Coventry'),
 ('H.P. Lovecraft', '1890-08-20', 'Providence');

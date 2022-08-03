@@ -36,6 +36,17 @@ describe('backend-express-template routes', () => {
     const res = await request(app).get('/authors');
     expect(res.body.length).toEqual(3);
   });
+  it('get authors/:id should return a single author', async () => {
+    const res = await request(app).get('/authors/1');
+    expect(res.body).toHaveProperty('id', '1');
+    expect(res.body).toHaveProperty('author_name', 'James Rollins');
+    expect(res.body).toHaveProperty('dob', '1961-08-20T05:00:00.000Z');
+    expect(res.body).toHaveProperty('pob', 'Chicago');
+    expect(res.body).toHaveProperty('books');
+    expect(res.body.books[0]).toHaveProperty('id');
+    expect(res.body.books[0]).toHaveProperty('title');
+    expect(res.body.books[0]).toHaveProperty('released');
+  });
   afterAll(() => {
     pool.end();
   });

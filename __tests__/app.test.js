@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const Book = require('../lib/models/Book');
+const Author = require('../lib/models/Author');
 
 describe('backend-express-template routes', () => {
   beforeEach(() => {
@@ -23,7 +24,7 @@ describe('backend-express-template routes', () => {
     expect(res.body.authors[0]).toHaveProperty('id');
     expect(res.body.authors[0]).toHaveProperty('author_name');
   });
-  it('/post should add new book to the array', async () => {
+  it('/post should add new book to the database', async () => {
     const book = new Book({
       title: 'A new book',
       released: 2025
@@ -46,6 +47,17 @@ describe('backend-express-template routes', () => {
     expect(res.body.books[0]).toHaveProperty('id');
     expect(res.body.books[0]).toHaveProperty('title');
     expect(res.body.books[0]).toHaveProperty('released');
+  });
+  it('/post should add new author to the database', async () => {
+    const author = new Author({
+      author_name: 'A new author',
+      dob: '2029-08-02T05:00:00.000Z',
+      pob: 'Here'
+    });
+    const res = await request(app).post('/authors').send(author);
+    expect(res.body.author_name).toEqual(author.author_name);
+    expect(res.body.dob).toEqual(author.dob);
+    expect(res.body.pob).toEqual(author.pob);
   });
   afterAll(() => {
     pool.end();
